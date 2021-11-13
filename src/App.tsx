@@ -118,7 +118,7 @@ function App() {
                 onClick={() => {
                   console.log("asd");
                   const newData = [...movieData].sort((a, b) =>
-                    a.rating < b.rating ? 1 : -1
+                    a["_source"].rating < b["_source"].rating ? 1 : -1
                   );
                   setMovieData(newData);
                 }}
@@ -130,7 +130,7 @@ function App() {
                 onClick={() => {
                   console.log("asd");
                   const newData = [...movieData].sort((a, b) =>
-                    a.year < b.year ? 1 : -1
+                    a["_source"].year < b["_source"].year ? 1 : -1
                   );
                   setMovieData(newData);
                 }}
