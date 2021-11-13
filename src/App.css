@@ -162,6 +162,10 @@ code {
   font-size: 1.5rem;
 }
 
+code:hover {
+  text-decoration: underline;
+}
+
 .article {
   flex-direction: column;
   height: auto;
@@ -206,4 +210,25 @@ code {
 .sort:active {
   top: 3px;
   box-shadow: none;
+}
+
+.readmore {
+  background: transparent;
+  border: none;
+  color: white;
+  position: relative;
+  margin-top: 10px;
+}
+
+ul {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-left: 20px;
+  list-style-type: square;
+}
+
+.score {
+  color: white;
+  margin-right: 10px;
+  font-size: 10px;
 }

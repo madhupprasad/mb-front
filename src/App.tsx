@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
+import { articleData } from "./data";
 
 function App() {
   const [movieData, setMovieData] = useState([]);
@@ -7,6 +8,7 @@ function App() {
   const textInput = useRef<HTMLInputElement>(null);
   const [filterVisible, setFilterVisible] = useState(false);
   const [filters, setFilters] = useState([]);
+  const [show, setShow] = useState("");
 
   const filtersData = ["title", "genres", "actors", "directors"];
 
@@ -85,7 +87,6 @@ function App() {
           </button>
         </div>
       </div>
-
       {filterVisible && (
         <div className="filterContainer border">
           {filtersData.map((item) => (
@@ -108,7 +109,6 @@ function App() {
           ))}
         </div>
       )}
-
       <div className="result">
         {movieData.length > 0 && (
           <div className="left border">
@@ -139,12 +139,9 @@ function App() {
               </button>
             </div>
             {movieData.map((item: any) => {
+              item = item["_source"];
               return (
-                <div
-                  className="card border"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => onCardClick(item)}
-                >
+                <div className="card border" style={{ cursor: "pointer" }}>
                   <div className="image">
                     <img
                       src={item.img_url || "http://via.placeholder.com/100X130"}
@@ -152,8 +149,8 @@ function App() {
                       style={{ height: "auto", width: "100px" }}
                     />
                   </div>
-                  <div className="content">
-                    <code>
+                  <div>
+                    <code onClick={() => onCardClick(item)}>
                       {item.title} - {item.year}
                     </code>
                     <div style={{ fontWeight: "bold", marginBottom: "7px" }}>
@@ -169,8 +166,44 @@ function App() {
                         borderRadius: "4px",
                       }}
                     >
-                      {item.rating || "--"}
+                      {item.rating || "No Ratings"}
                     </span>
+                    {show === item.title + item.year && (
+                      <div>
+                        <ul>
+                          <b>Actors</b>
+                          {item.actors.map((item) => (
+                            <li>{item}</li>
+                          ))}
+                        </ul>
+                        <ul>
+                          <b>Genres</b>
+                          {item.genres.map((item) => (
+                            <li>{item}</li>
+                          ))}
+                        </ul>
+                        <ul>
+                          <b>Directors</b>
+                          {item.directors.map((item) => (
+                            <li>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    <div>
+                      <button
+                        className="readmore"
+                        onClick={() => {
+                          show !== item.title + item.year
+                            ? setShow(item.title + item.year)
+                            : setShow("");
+                        }}
+                      >
+                        {show !== item.title + item.year
+                          ? "read more"
+                          : "read less"}
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
@@ -197,6 +230,22 @@ function App() {
           </div>
         )}
       </div>
+      {movieData.length > 0 && (
+        <div className="score">
+          Elastic search score :
+          {movieData.map((item) => (
+            <span style={{ marginRight: "10px" }}>{item["_score"]}</span>
+          ))}
+        </div>
+      )}
+      {article.length > 0 && (
+        <div className="score">
+          Tf-Idf vectorizer score :
+          {article.map((item) => (
+            <span style={{ marginRight: "10px" }}>{item["score"]}</span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
